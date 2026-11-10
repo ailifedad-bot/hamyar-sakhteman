@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>همیار ساختمان | خدمات فنی و تعمیرات ساختمان گرگان</title>
+<meta name="description" content="درخواست تعمیرات ساختمان را ثبت کنید، متخصص تأییدشدهٔ محله‌تان را ببینید و کار را با گزارش شفاف تحویل بگیرید.">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f7f5f0;
+    --card:#ffffff;
+    --ink:#16221e;
+    --muted:#6b726f;
+    --green:#0f5c47;
+    --green-dark:#0b4636;
+    --chip:#f0ece4;
+    --line:#e6e1d6;
+    --radius:28px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Vazirmatn",Tahoma,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.7;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  a{color:inherit;text-decoration:none}
+  :focus-visible{outline:3px solid var(--green);outline-offset:3px}
+
+  /* ---------- Header ---------- */
+  .header{
+    position:sticky;top:0;z-index:10;
+    background:rgba(247,245,240,.94);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:12px;
+    padding:12px 16px;
+  }
+  .logo{
+    width:48px;height:48px;border-radius:16px;
+    background:var(--green);color:#fff;
+    display:grid;place-items:center;flex:none;
+  }
+  .logo svg{width:26px;height:26px}
+  .brand{flex:1;min-width:0}
+  .brand b{display:block;font-size:1.05rem;font-weight:800;line-height:1.3}
+  .brand span{display:block;font-size:.8rem;color:var(--muted);line-height:1.5}
+  .login{font-weight:700;color:#3a423f;padding:8px 10px}
+  .btn-start{
+    background:var(--green);color:#fff;font-weight:700;
+    border-radius:18px;padding:10px 16px;
+    line-height:1.4;text-align:center;font-size:.95rem;
+  }
+
+  /* ==========================================================
+     PART 1 CSS — screens 1 to 3 (hero, photos, feature cards)
+     ========================================================== */
+  /* ---------- Hero ---------- */
+  .hero{max-width:720px;margin:0 auto;padding:20px 20px 8px;text-align:center}
+  .location{
+    display:inline-flex;align-items:center;gap:8px;
+    background:#fff;border:1px solid var(--line);
+    border-radius:999px;padding:8px 18px;
+    font-size:.9rem;font-weight:500;
+  }
+  .location svg{width:18px;height:18px;color:var(--green)}
+  h1{
+    font-size:clamp(2rem,8vw,3rem);
+    font-weight:800;line-height:1.5;
+    margin:28px 0 20px;
+  }
+  .lead{
+    color:var(--muted);font-size:1.05rem;line-height:2.1;
+    max-width:34em;margin:0 auto 28px;
+  }
+  .cta-row{display:flex;flex-direction:column;align-items:center;gap:14px}
+  .btn-primary{
+    display:inline-flex;align-items:stretch;
+    background:var(--green);color:#fff;
+    border-radius:24px;overflow:hidden;
+    box-shadow:0 14px 30px -10px rgba(15,92,71,.55);
+    font-weight:700;font-size:1.05rem;
+    transition:background .2s;
+  }
+  .btn-primary:hover{background:var(--green-dark)}
+  .btn-primary .label{padding:18px 34px}
+  .btn-primary .arrow{
+    display:grid;place-items:center;padding:0 22px;
+    border-inline-end:1px solid rgba(255,255,255,.25);
+  }
+  .btn-primary svg{width:22px;height:22px}
+  .btn-secondary{
+    background:#fff;border:1px solid var(--line);
+    border-radius:20px;padding:16px 34px;
+    font-weight:700;
+    box-shadow:0 6px 16px -10px rgba(0,0,0,.25);
+    transition:background .2s;
+  }
+  .btn-secondary:hover{background:var(--chip)}
+  .note{color:var(--muted);font-size:.9rem;margin-top:18px}
+
+  /* ---------- Photos ---------- */
+  .photos{
+    max-width:720px;margin:32px auto 0;padding:0 20px;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+    align-items:start;
+  }
+  .photo{
+    border-radius:26px 26px 0 0;overflow:hidden;
+    background:linear-gradient(160deg,#d9cdb8,#b9a98d);
+    aspect-ratio:3/4.1;
+  }
+  .photo:nth-child(2){margin-top:30px;aspect-ratio:3/3.8}
+  .photo img{width:100%;height:100%;object-fit:cover;display:block}
+
+  /* ---------- Feature cards ---------- */
+  .features{
+    max-width:720px;margin:0 auto;padding:28px 20px 48px;
+    display:grid;gap:20px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:32px 28px 36px;
+    box-shadow:0 12px 28px -18px rgba(0,0,0,.28);
+  }
+  .icon{
+    width:68px;height:68px;border-radius:22px;
+    background:var(--chip);color:var(--green);
+    display:grid;place-items:center;margin-bottom:26px;
+  }
+  .icon svg{width:30px;height:30px}
+  .card h2{font-size:1.4rem;font-weight:800;margin-bottom:12px}
+  .card p{color:var(--muted);font-size:1.05rem;line-height:2.1}
+
+  @media (min-width:720px){
+    .features{grid-template-columns:repeat(3,1fr)}
+  }
+  @media (max-width:380px){
+    .brand span{font-size:.72rem}
+    .btn-primary .label{padding:16px 22px}
+  }
+
+  /* ==========================================================
+     PART 2 CSS — screens 4 to 7 (specialties, region note, 3 steps)
+     ========================================================== */
+  /* SCREEN 4: gap after the price card, section intro, first row of the grid */
+  .specialties{max-width:720px;margin:0 auto;padding:72px 20px 24px}
+  .kicker{color:var(--green);font-weight:700;font-size:.95rem}
+  .specialties h2{font-size:clamp(1.7rem,6vw,2.2rem);font-weight:800;line-height:1.5;margin:6px 0 14px}
+  .specialties .sub{color:var(--muted);font-size:1.05rem;line-height:2.1;margin-bottom:26px}
+  .spec-grid{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .spec{
+    display:flex;align-items:center;gap:14px;height:100%;min-height:96px;
+    background:#fff;border:1px solid var(--line);border-radius:24px;
+    padding:16px;font-weight:700;line-height:1.7;
+    transition:background .2s;
+  }
+  .spec:hover{background:var(--chip)}
+  .spec .ico{
+    width:60px;height:60px;border-radius:20px;flex:none;
+    background:var(--chip);color:var(--green);
+    display:grid;place-items:center;
+  }
+  .spec .ico svg{width:26px;height:26px}
+  .region-note{
+    display:flex;align-items:center;gap:14px;
+    color:var(--muted);line-height:2;margin-top:34px;
+  }
+  .region-note svg{width:24px;height:24px;flex:none}
+
+  .steps{background:#f4f0ea;border-top:1px solid var(--line);padding:56px 20px 64px;margin-top:28px}
+  .steps-inner{max-width:720px;margin:0 auto}
+  .steps h2{font-size:clamp(1.8rem,7vw,2.4rem);font-weight:800;margin-bottom:32px}
+  .step{
+    position:relative;background:#fff;border:1px solid var(--line);
+    border-radius:28px;padding:32px 28px 34px;margin-bottom:20px;
+  }
+  .step .icon{background:#e6eeec}
+  .step .num{
+    position:absolute;top:22px;inset-inline-end:auto;left:26px;
+    font-size:3.2rem;font-weight:800;line-height:1;color:#f1ece4;
+  }
+  .step h3{font-size:1.4rem;font-weight:800;margin-bottom:12px}
+  .step p{color:var(--muted);font-size:1.05rem;line-height:2.1}
+  @media (min-width:720px){
+    .steps-inner{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .steps h2{grid-column:1/-1;margin-bottom:12px}
+    .step{margin-bottom:0}
+  }
+
+  /* ==========================================================
+     PART 3 CSS — screens 8 to 10 (call-to-action, footer)
+     ========================================================== */
+  /* SCREEN 8: green call-to-action card */
+  .cta{border-top:1px solid var(--line);padding:72px 20px 80px}
+  .cta-card{
+    max-width:720px;margin:0 auto;
+    background:var(--green);color:#fff;
+    border-radius:44px;padding:56px 28px 52px;text-align:center;
+  }
+  .cta-card h2{font-size:clamp(1.8rem,7vw,2.3rem);font-weight:800;line-height:1.5;margin-bottom:16px}
+  .cta-card p{color:rgba(255,255,255,.82);font-size:1.05rem;line-height:2.1;max-width:30em;margin:0 auto}
+  .cta-actions{display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:40px}
+  .btn-light{
+    background:var(--bg);color:var(--green);font-weight:800;
+    border-radius:20px;padding:18px 36px;transition:background .2s;
+  }
+  .btn-light:hover{background:#fff}
+  .btn-outline{
+    border:1px solid rgba(255,255,255,.4);color:#fff;font-weight:800;
+    border-radius:20px;padding:16px 36px;transition:background .2s;
+  }
+  .btn-outline:hover{background:rgba(255,255,255,.1)}
+
+  /* SCREEN 9: footer brand */
+  .footer{background:#fff;border-top:1px solid var(--line);padding:44px 20px 28px}
+  .footer-inner{max-width:720px;margin:0 auto}
+  .f-brand{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+  .f-brand .logo{width:56px;height:56px;border-radius:18px}
+  .f-brand b{font-size:1.05rem;font-weight:800}
+  .footer p.about{color:var(--muted);font-size:1.05rem;line-height:2.2}
+
+  /* SCREEN 10: link lists and copyright */
+  .footer h3{font-size:1.05rem;font-weight:800;margin:40px 0 14px}
+  .footer ul{list-style:none}
+  .footer li{color:var(--muted);font-size:1.05rem;line-height:2.8}
+  .footer li a:hover{color:var(--green)}
+  .copyright{
+    border-top:1px solid var(--line);margin-top:64px;padding-top:26px;
+    text-align:center;color:var(--muted);font-size:.9rem;
+  }
+  @media (min-width:720px){
+    .footer-inner{display:grid;grid-template-columns:2fr 1fr 1.4fr;gap:32px}
+    .footer h3{margin-top:0}
+    .copyright{grid-column:1/-1;margin-top:24px}
+  }
+
+  /* ==========================================================
+     PART 4 CSS — Supabase: panel, forms, login dialog
+     ========================================================== */
+  [hidden]{display:none!important}
+  .panel{max-width:720px;margin:0 auto;padding:24px 20px 0}
+  .panel-box{background:#fff;border:1px solid var(--line);border-radius:28px;padding:24px 20px 28px}
+  .panel h2{font-size:1.5rem;font-weight:800;margin-bottom:16px}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+  .tabs button{font:inherit;font-weight:700;border:1px solid var(--line);background:var(--bg);border-radius:14px;padding:8px 14px;cursor:pointer}
+  .tabs button.on{background:var(--green);color:#fff;border-color:var(--green)}
+  .field{display:block;margin-bottom:14px;font-weight:700;font-size:.95rem}
+  .field input,.field select,.field textarea{display:block;width:100%;margin-top:6px;font:inherit;font-weight:400;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--ink)}
+  .field textarea{min-height:96px;resize:vertical}
+  .checks{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin-top:8px;font-weight:400}
+  .checks label{display:flex;align-items:center;gap:6px}
+  .checks input{width:auto;margin:0}
+  .btn-submit{font:inherit;font-weight:800;background:var(--green);color:#fff;border:0;border-radius:16px;padding:14px 28px;cursor:pointer}
+  .btn-submit:disabled{opacity:.6}
+  .link-btn{font:inherit;background:none;border:0;color:var(--green);font-weight:700;cursor:pointer;padding:8px 4px}
+  .msg{margin-top:12px;font-size:.95rem;line-height:1.9}
+  .msg.ok{color:var(--green)}
+  .msg.err{color:#b3261e}
+  .item{border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:12px}
+  .item b{margin-inline-end:8px}
+  .item small{color:var(--muted)}
+  .item p{margin-top:6px;color:var(--muted)}
+  .badge{display:inline-block;background:var(--chip);color:var(--green);border-radius:999px;padding:2px 12px;font-size:.85rem;font-weight:700}
+  dialog{border:0;border-radius:28px;padding:28px 22px;max-width:420px;width:calc(100% - 32px);margin:auto;background:#fff;color:var(--ink)}
+  dialog::backdrop{background:rgba(0,0,0,.4)}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <a class="logo" href="#top" aria-label="همیار ساختمان">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2M10 21v-3h4v3"/></svg>
+  </a>
+  <div class="brand">
+    <b>همیار ساختمان</b>
+    <span>گرگان • خدمات فنی و تعمیرات ساختمان</span>
+  </div>
+  <a class="login" href="#login" id="loginLink">ورود</a>
+  <a class="btn-start" href="#register" id="startBtn">شروع<br>کنید</a>
+</header>
+
+<main id="top">
+
+  <!-- ==========================================================
+       PART 4 HTML — Supabase: user panel (visible after login)
+       ========================================================== -->
+  <section class="panel" id="panel" hidden>
+    <div class="panel-box">
+      <h2>پنل من</h2>
+      <div class="tabs">
+        <button type="button" data-tab="request" class="on">ثبت درخواست</button>
+        <button type="button" data-tab="list">درخواست‌های من</button>
+        <button type="button" data-tab="sub">اشتراک</button>
+        <button type="button" data-tab="tech">ثبت‌نام متخصص</button>
+        <button type="button" data-tab="admin" id="adminTab" hidden>مدیریت</button>
+      </div>
+
+      <div class="tab" id="tab-request">
+        <form id="reqForm">
+          <label class="field">نوع خدمت<select id="rCat" required></select></label>
+          <label class="field">محله<select id="rArea" required></select></label>
+          <label class="field">آدرس<input id="rAddr" required></label>
+          <label class="field">شرح مشکل<textarea id="rDesc" required></textarea></label>
+          <label class="field">زمان مناسب
+            <select id="rTime"><option>فرقی ندارد</option><option>صبح</option><option>بعدازظهر</option><option>عصر</option></select>
+          </label>
+          <button class="btn-submit" id="rBtn">ثبت درخواست</button>
+          <p class="msg" id="rMsg"></p>
+        </form>
+      </div>
+
+      <div class="tab" id="tab-list" hidden><div id="reqList"></div></div>
+
+      <div class="tab" id="tab-sub" hidden>
+        <form id="subForm">
+          <label class="field">طرح اشتراک<select id="sPlan" required></select></label>
+          <label class="field">تصویر رسید پرداخت (اختیاری)<input id="sFile" type="file" accept="image/*,application/pdf"></label>
+          <button class="btn-submit" id="sBtn">درخواست اشتراک</button>
+          <p class="msg" id="sMsg"></p>
+        </form>
+        <h3 style="margin:22px 0 10px">اشتراک‌های من</h3>
+        <div id="subList"></div>
+      </div>
+
+      <div class="tab" id="tab-tech" hidden>
+        <form id="techForm">
+          <label class="field">تخصص<select id="tSpec" required></select></label>
+          <label class="field">سال‌های سابقه<input id="tExp" type="number" min="0" max="60" value="0"></label>
+          <label class="field">توضیح دربارهٔ تجربه<textarea id="tBio"></textarea></label>
+          <div class="field">محله‌های فعالیت<div class="checks" id="tAreas"></div></div>
+          <button class="btn-submit">ثبت درخواست متخصص</button>
+          <p class="msg" id="tMsg"></p>
+        </form>
+      </div>
+
+      <div class="tab" id="tab-admin" hidden><div id="adminBox"></div></div>
+    </div>
+  </section>
+  <!-- ==========================================================
+       PART 1 HTML — screens 1 to 3 (hero, photos, feature cards)
+       ========================================================== -->
+  <!-- Hero -->
+  <section class="hero">
+    <div class="location">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+      گرگان، استان گلستان • خدمات فنی ساختمان
+    </div>
+
+    <h1>هر تعمیری، با یک همیار مطمئن</h1>
+
+    <p class="lead">
+      از برق و لوله‌کشی تا سرمایش، گرمایش و بازسازی؛ درخواست خود را ثبت کنید، متخصص تأییدشدهٔ محله‌تان را ببینید و کار را با گزارش شفاف تحویل بگیرید.
+    </p>
+
+    <div class="cta-row">
+      <a class="btn-primary" href="#request">
+        <span class="label">ثبت درخواست خدمات</span>
+        <span class="arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        </span>
+      </a>
+      <a class="btn-secondary" href="#experts">مشاهده متخصصان</a>
+    </div>
+
+    <p class="note">ثبت درخواست رایگان است • پرداخت تنها برای اشتراک</p>
+  </section>
+
+  <!-- Photos: replace the src values with your own images -->
+  <section class="photos" aria-label="متخصصان همیار ساختمان">
+    <div class="photo"><img src="images/tech-1.jpg" alt="متخصص برق در حال کار" onerror="this.remove()"></div>
+    <div class="photo"><img src="images/tech-2.jpg" alt="متخصص لوله‌کشی در حال کار" onerror="this.remove()"></div>
+    <div class="photo"><img src="images/tech-3.jpg" alt="متخصص تأسیسات سرمایش و گرمایش" onerror="this.remove()"></div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="experts">
+    <article class="card">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <h2>متخصص تأییدشده</h2>
+      <p>هویت، مدارک و تخصص هر متخصص توسط مدیریت بررسی می‌شود.</p>
+    </article>
+
+    <article class="card">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 13l2 2 4-4"/></svg>
+      </div>
+      <h2>گزارش شفاف کار</h2>
+      <p>شرح اقدامات، قطعات مصرفی و تصاویر قبل و بعد در یک گزارش.</p>
+    </article>
+
+    <article class="card">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2-2h11v3"/><rect x="4" y="7" width="16" height="13" rx="2"/><path d="M16 13.5h4v3h-4a1.5 1.5 0 0 1 0-3z"/></svg>
+      </div>
+      <h2>قیمت توافقی</h2>
+      <p>قیمت‌گذاری تعمیرات میان شما و متخصص انجام می‌شود، نه سیستم.</p>
+    </article>
+  </section>
+
+  <!-- ==========================================================
+       PART 2 HTML — screens 4 to 7 (specialties, region note, 3 steps)
+       ========================================================== -->
+
+  <!-- ===== SCREEN 4: section intro (kicker, heading, text) + first row: electrical, plumbing ===== -->
+  <section class="specialties" id="specialties">
+    <p class="kicker">تخصص‌های همیار ساختمان</p>
+    <h2>هر کاری که خانه‌تان لازم دارد</h2>
+    <p class="sub">همه متخصصان پیش از نمایش در فهرست، توسط مدیریت بررسی و تأیید می‌شوند.</p>
+
+    <ul class="spec-grid">
+      <li><a class="spec" href="#request"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></span>برق‌کاری ساختمان</a></li>
+      <li><a class="spec" href="#request"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6 6 10a6 6 0 0 1-12 0c0-4 6-10 6-10z"/><path d="M10 14a2 2 0 0 0 2 2"/></svg></span>لوله‌کشی آب و فاضلاب</a></li>
+
+      <!-- ===== SCREEN 5: rest of the grid (boiler, coolers, heating, cooling, doors, welding, painting, tiling) ===== -->
+
+      <li><a class="spec" href="#request"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-6 1-9z"/></svg></span>تعمیر پکیج و آبگرمکن</a></li>
+      <li><a class="spec" href="#request"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="1.5"/><path d="M12 10.5C12 6 14 3 17 4s2 5-2 7M13.5 12c4.5 0 7.5 2 6.5 5s-5 2-7-2M12 13.5C12 18 10 21 7 20s-2-5 2-7M10.5 12C6 12 3 10 4 7s5-2 7 2"/></svg></span>تعمیر کولر آبی و گازی</a></li>
+
+      <li><a class="spec" href="#request"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0z"/></svg></span>نصب و تعمیر سیستم گرمایشی</a></li>
+      <li><a class="spec" href="#request"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M4.9 6.5l14.2 11M19.1 6.5L4.9 17.5M9 3.5l3 2 3-2M9 20.5l3-2 3 2M3 10l3.5-.5L6 6M21 14l-3.5.5L18 18"/></svg></span>نصب و تعمیر سیستم سرمایشی</a></li>
+
+      <li><a class="spec" href="#request"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4l8-1.5v19L5 21zM13 6h6v15h-6M3 21h18M10 12h.01"/></svg></span>تعمیر درب و پنجره</a></li>
+      <li><a class="spec" href="#request"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4l6 6-2.5 2.5-6-6L14 4zM11.5 6.5L5 13M12.5 11.5L5 19l-1-1 7.5-7.5M14 14l5 5"/></svg></span>جوشکاری و آهنگری</a></li>
+
+      <li><a class="spec" href="#request"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 4l-9 9M9 13l2 2c0 3-2 5-6 5 1-1 1-2 1-3 0-2 1-4 3-4zM13 11l2 2 5-8-7 6z"/></svg></span>نقاشی ساختمان</a></li>
+      <li><a class="spec" href="#request"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg></span>کاشی‌کاری و سرامیک</a></li>
+
+      <!-- ===== SCREEN 6: last rows, region note, "three steps" heading ===== -->
+
+      <li><a class="spec" href="#request"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.1L3 17.7 6.3 21l6.3-6.3a4 4 0 0 0 5.1-5.4l-2.6 2.6-2.4-.6-.6-2.4 2.6-2.6z"/></svg></span>بنایی و گچ‌کاری</a></li>
+      <li><a class="spec" href="#request"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l4 2.3v4.4L12 11 8 8.7V4.3L12 2zM6 12l4 2.3v4.4L6 21l-4-2.3v-4.4L6 12zM18 12l4 2.3v4.4L18 21l-4-2.3v-4.4L18 12z"/></svg></span>کابینت و کمد</a></li>
+
+      <li><a class="spec" href="#request"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7v9H4v-9z"/><path d="M10 20v-6h4v6"/></svg></span>تعمیرات عمومی ساختمان</a></li>
+      <li><a class="spec" href="#request"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2v5M15 2v5M6 7h12v4a6 6 0 0 1-12 0V7zM12 17v5"/></svg></span>نصب تجهیزات و لوازم خانگی</a></li>
+    </ul>
+
+    <p class="region-note">
+      <span>همیار ساختمان فعلاً در شهر گرگان فعال است و به‌زودی به شهرهای دیگر گسترش می‌یابد.</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    </p>
+  </section>
+
+  <section class="steps" id="how">
+    <div class="steps-inner">
+      <h2>سه قدم تا حل مشکل</h2>
+
+      <!-- ===== SCREEN 7: the three step cards ===== -->
+
+      <article class="step">
+        <span class="num" aria-hidden="true">۱</span>
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h.01M9 14h.01M12 10h4M12 14h4"/></svg></div>
+        <h3>درخواست را ثبت کنید</h3>
+        <p>تخصص، محله و شرح مشکل را بنویسید و در صورت نیاز عکس پیوست کنید.</p>
+      </article>
+
+      <article class="step">
+        <span class="num" aria-hidden="true">۲</span>
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 11l2 2 4-4"/></svg></div>
+        <h3>متخصص را بشناسید</h3>
+        <p>متخصص تأییدشده‌ای که درخواست را می‌پذیرد، با امتیاز و سابقه نمایش داده می‌شود.</p>
+      </article>
+
+      <article class="step">
+        <span class="num" aria-hidden="true">۳</span>
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l2.4 1.7 3-.1.9 2.8 2.4 1.8-1 2.8 1 2.8-2.4 1.8-.9 2.8-3-.1L12 21.5l-2.4-1.7-3 .1-.9-2.8-2.4-1.8 1-2.8-1-2.8 2.4-1.8.9-2.8 3 .1L12 2.5z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h3>پایان کار را تأیید کنید</h3>
+        <p>گزارش کار را ببینید، پایان کار را تأیید و امتیاز ثبت کنید.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       PART 3 HTML — screens 8 to 10 (call-to-action, footer)
+       ========================================================== -->
+
+  <!-- ===== SCREEN 8: green call-to-action card ===== -->
+  <section class="cta" id="register">
+    <div class="cta-card">
+      <h2>امروز کارتان را به همیار بسپارید</h2>
+      <p>ثبت‌نام کنید، درخواست بگذارید و متخصص تأییدشدهٔ محله‌تان را انتخاب کنید.</p>
+      <div class="cta-actions">
+        <a class="btn-light" href="#login">ورود / ثبت‌نام مشتری</a>
+        <a class="btn-outline" href="#expert">ثبت‌نام متخصص</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<dialog id="authDlg">
+  <form id="authForm">
+    <h2 id="authTitle" style="margin-bottom:16px">ورود</h2>
+    <label class="field" id="nameField" hidden>نام و نام خانوادگی<input id="aName" autocomplete="name"></label>
+    <label class="field">ایمیل<input id="aEmail" type="email" required autocomplete="email" dir="ltr"></label>
+    <label class="field">رمز عبور<input id="aPass" type="password" required minlength="6" autocomplete="current-password" dir="ltr"></label>
+    <button class="btn-submit" id="authBtn">ادامه</button>
+    <p class="msg" id="authMsg"></p>
+    <button type="button" class="link-btn" id="authSwitch"></button>
+    <button type="button" class="link-btn" id="authClose">بستن</button>
+  </form>
+</dialog>
+
+<!-- ===== SCREEN 9: footer brand and description ===== -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="f-about">
+      <div class="f-brand">
+        <span class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2M10 21v-3h4v3"/></svg>
+        </span>
+        <b>همیار ساختمان</b>
+      </div>
+      <p class="about">ارتباط مستقیم مشتریان با متخصصان خدمات فنی و تعمیرات ساختمان در گرگان، استان گلستان.</p>
+    </div>
+
+    <!-- ===== SCREEN 10: quick links, our commitments, copyright ===== -->
+    <nav aria-label="دسترسی سریع">
+      <h3>دسترسی سریع</h3>
+      <ul>
+        <li><a href="#login">ورود و ثبت‌نام</a></li>
+        <li><a href="#request">ثبت درخواست خدمات</a></li>
+        <li><a href="#expert">ثبت‌نام متخصص</a></li>
+        <li><a href="#support">پشتیبانی و شکایت</a></li>
+      </ul>
+    </nav>
+
+    <div>
+      <h3>تعهد ما</h3>
+      <ul>
+        <li>تأیید هویت و مدارک متخصصان پیش از پذیرش</li>
+        <li>پیگیری کامل وضعیت درخواست تا پایان کار</li>
+        <li>دسترسی محدود و امن به اطلاعات تماس</li>
+        <li>امکان ثبت شکایت و بررسی توسط مدیریت</li>
+      </ul>
+    </div>
+
+    <p class="copyright">همه حقوق این برنامه برای «همیار ساختمان» محفوظ است.</p>
+  </div>
+</footer>
+
+<!-- ==========================================================
+     PART 4 JS — Supabase connection (auth, requests, subscription, technician signup)
+     ========================================================== -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+(() => {
+  const sb = supabase.createClient('https://zgswoheckqasqoclhodg.supabase.co', 'sb_publishable_Gs5TQ0bdmhNvboT6_1gU3Q_mzmnv2Ny');
+  const $ = id => document.getElementById(id);
+  const FA = {new:'جدید', assigned:'ارجاع‌شده', accepted:'پذیرفته‌شده', in_progress:'در حال انجام', completed:'انجام‌شده', cancelled:'لغوشده', pending:'در انتظار تأیید', active:'فعال', expired:'منقضی', rejected:'ردشده'};
+  const say = (id, t, ok) => { const m = $(id); m.textContent = t; m.className = 'msg ' + (ok ? 'ok' : 'err'); };
+  const date = d => d ? new Date(d).toLocaleDateString('fa-IR') : '';
+  let user = null, mode = 'login', tabAfter = 'request';
+
+  function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
+  function fill(sel, list, v, t) { sel.textContent = ''; list.forEach(x => { const o = el('option', '', t(x)); o.value = v(x); sel.append(o); }); }
+
+  async function loadRefs() {
+    const [c, a] = await Promise.all([
+      sb.from('service_categories').select('id,name,icon').eq('active', true).order('sort_order'),
+      sb.from('service_areas').select('id,neighborhood').eq('active', true).order('neighborhood')
+    ]);
+    const cats = c.data || [], areas = a.data || [];
+    fill($('rCat'), cats, x => x.id, x => x.icon + ' ' + x.name);
+    fill($('rArea'), areas, x => x.id, x => x.neighborhood);
+    fill($('tSpec'), cats, x => x.name, x => x.name);
+    const box = $('tAreas'); box.textContent = '';
+    areas.forEach(x => { const l = el('label'); const i = el('input'); i.type = 'checkbox'; i.value = x.id; l.append(i, x.neighborhood); box.append(l); });
+  }
+
+  function header() {
+    $('loginLink').textContent = user ? 'خروج' : 'ورود';
+    $('startBtn').innerHTML = user ? 'پنل<br>من' : 'شروع<br>کنید';
+    if (!user) $('panel').hidden = true;
+    setTimeout(checkAdmin, 0);
+  }
+  sb.auth.onAuthStateChange((_e, s) => { user = s ? s.user : null; header(); });
+  sb.auth.getSession().then(({ data }) => { user = data.session ? data.session.user : null; header(); });
+
+  function openAuth(m) {
+    mode = m;
+    $('authTitle').textContent = m === 'signup' ? 'ثبت‌نام' : 'ورود';
+    $('nameField').hidden = m !== 'signup';
+    $('authSwitch').textContent = m === 'signup' ? 'حساب دارید؟ وارد شوید' : 'حساب ندارید؟ ثبت‌نام کنید';
+    $('authMsg').textContent = '';
+    $('authDlg').showModal();
+  }
+  $('authSwitch').onclick = () => openAuth(mode === 'login' ? 'signup' : 'login');
+  $('authClose').onclick = () => $('authDlg').close();
+
+  $('authForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const b = $('authBtn'); b.disabled = true; say('authMsg', 'لطفاً صبر کنید…', true);
+    const email = $('aEmail').value.trim(), password = $('aPass').value;
+    const r = mode === 'signup'
+      ? await sb.auth.signUp({ email, password, options: { data: { full_name: $('aName').value.trim() } } })
+      : await sb.auth.signInWithPassword({ email, password });
+    b.disabled = false;
+    if (r.error) {
+      const m = r.error.message || '';
+      say('authMsg', /invalid login/i.test(m) ? 'ایمیل یا رمز عبور اشتباه است.'
+        : /not confirmed/i.test(m) ? 'ایمیل هنوز تأیید نشده است؛ لینک ارسالی را باز کنید.'
+        : /already/i.test(m) ? 'این ایمیل قبلاً ثبت شده است؛ وارد شوید.'
+        : /at least|weak|short/i.test(m) ? 'رمز عبور باید حداقل ۶ نویسه باشد.'
+        : 'خطا: ' + m);
+      return;
+    }
+    if (!r.data.session) { say('authMsg', 'لینک تأیید به ایمیل شما ارسال شد. بعد از تأیید وارد شوید.', true); return; }
+    $('authDlg').close(); user = r.data.session.user; header(); openPanel(tabAfter);
+  });
+
+  document.addEventListener('click', async e => {
+    const a = e.target.closest('a[href^="#"]'); if (!a) return;
+    const h = a.getAttribute('href');
+    if (!['#login', '#register', '#request', '#expert'].includes(h)) return;
+    e.preventDefault();
+    if (a.id === 'loginLink' && user) { await sb.auth.signOut(); user = null; header(); return; }
+    tabAfter = h === '#expert' ? 'tech' : 'request';
+    if (user) openPanel(tabAfter); else openAuth(h === '#register' ? 'signup' : 'login');
+  });
+
+  function openPanel(tab) {
+    $('panel').hidden = false;
+    document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
+    document.querySelectorAll('.tab').forEach(t => t.hidden = t.id !== 'tab-' + tab);
+    if (tab === 'list') loadRequests();
+    if (tab === 'sub') loadSubs();
+    if (tab === 'admin') loadAdmin();
+    $('panel').scrollIntoView({ behavior: 'smooth' });
+  }
+  document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => openPanel(b.dataset.tab));
+
+  $('reqForm').addEventListener('submit', async e => {
+    e.preventDefault(); $('rBtn').disabled = true;
+    const { error } = await sb.from('service_requests').insert({
+      customer_id: user.id, category_id: +$('rCat').value, area_id: +$('rArea').value,
+      address: $('rAddr').value.trim(), description: $('rDesc').value.trim(), preferred_time: $('rTime').value
+    });
+    $('rBtn').disabled = false;
+    if (error) {
+      say('rMsg', error.code === '42501' ? 'برای ثبت درخواست باید اشتراک فعال داشته باشید. از تب «اشتراک» اشتراک بگیرید.' : 'ثبت نشد: ' + error.message);
+      return;
+    }
+    e.target.reset(); openPanel('list');
+  });
+
+  async function loadRequests() {
+    const box = $('reqList'); box.textContent = 'در حال بارگذاری…';
+    const { data, error } = await sb.from('service_requests')
+      .select('id,request_code,status,description,created_at,service_categories(name),service_areas(neighborhood)')
+      .order('created_at', { ascending: false });
+    box.textContent = '';
+    if (error) { box.textContent = 'بارگذاری ناموفق بود.'; return; }
+    if (!data.length) { box.textContent = 'هنوز درخواستی ثبت نکرده‌اید.'; return; }
+    data.forEach(r => {
+      const d = el('div', 'item');
+      d.append(el('b', '', (r.service_categories?.name || '') + ' • ' + (r.service_areas?.neighborhood || '')),
+        el('span', 'badge', FA[r.status] || r.status), el('br'),
+        el('small', '', 'کد پیگیری: ' + r.request_code + ' • ' + date(r.created_at)), el('p', '', r.description));
+      if (r.status === 'new') {
+        const x = el('button', 'link-btn', 'لغو درخواست'); x.type = 'button';
+        x.onclick = async () => { x.disabled = true; await sb.from('service_requests').update({ status: 'cancelled' }).eq('id', r.id); loadRequests(); };
+        d.append(x);
+      }
+      box.append(d);
+    });
+  }
+
+  async function loadSubs() {
+    const { data: plans } = await sb.from('subscription_plans').select('id,title,price_toman').eq('active', true).eq('audience', 'customer').order('id');
+    fill($('sPlan'), plans || [], x => x.id, x => x.title + ' — ' + (x.price_toman ? Number(x.price_toman).toLocaleString('fa-IR') + ' تومان' : 'رایگان'));
+    const box = $('subList'); box.textContent = '';
+    const { data } = await sb.from('subscriptions').select('status,ends_at,subscription_plans(title)').order('created_at', { ascending: false });
+    (data || []).forEach(s => {
+      const d = el('div', 'item');
+      d.append(el('b', '', s.subscription_plans?.title || ''), el('span', 'badge', FA[s.status] || s.status));
+      if (s.ends_at) d.append(el('br'), el('small', '', 'تا ' + date(s.ends_at)));
+      box.append(d);
+    });
+  }
+
+  $('subForm').addEventListener('submit', async e => {
+    e.preventDefault(); $('sBtn').disabled = true;
+    const { error } = await sb.from('subscriptions').insert({ user_id: user.id, plan_id: +$('sPlan').value });
+    if (error) { $('sBtn').disabled = false; say('sMsg', 'ثبت نشد: ' + error.message); return; }
+    const f = $('sFile').files[0]; let up = null;
+    if (f) {
+      const ext = (f.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
+      up = await sb.storage.from('payment-receipts').upload(user.id + '/' + Date.now() + '.' + ext, f);
+    }
+    $('sBtn').disabled = false;
+    say('sMsg', up && up.error ? 'اشتراک ثبت شد ولی بارگذاری رسید ناموفق بود: ' + up.error.message : 'درخواست اشتراک ثبت شد؛ پس از تأیید مدیریت فعال می‌شود.', !(up && up.error));
+    loadSubs();
+  });
+
+  $('techForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const ids = [...document.querySelectorAll('#tAreas input:checked')].map(i => +i.value);
+    if (!ids.length) { say('tMsg', 'حداقل یک محله انتخاب کنید.'); return; }
+    let r = await sb.from('technician_profiles').insert({ user_id: user.id, specialty: $('tSpec').value, bio: $('tBio').value.trim(), experience_years: +$('tExp').value || 0 });
+    if (r.error) { say('tMsg', r.error.code === '23505' ? 'درخواست شما قبلاً ثبت شده و در انتظار تأیید مدیریت است.' : 'ثبت نشد: ' + r.error.message); return; }
+    r = await sb.from('technician_service_areas').insert(ids.map(a => ({ technician_id: user.id, area_id: a })));
+    say('tMsg', r.error ? 'مشخصات ثبت شد ولی ثبت محله‌ها ناموفق بود: ' + r.error.message : 'درخواست ثبت شد. پس از تأیید مدیریت در فهرست متخصصان قرار می‌گیرید.', !r.error);
+  });
+
+  /* ---------- Admin: approvals (visible only to role = admin) ---------- */
+  async function checkAdmin() {
+    if (!user) { $('adminTab').hidden = true; return; }
+    const { data } = await sb.from('profiles').select('role').eq('id', user.id).maybeSingle();
+    $('adminTab').hidden = !(data && data.role === 'admin');
+  }
+
+  async function loadAdmin() {
+    const box = $('adminBox'); box.textContent = 'در حال بارگذاری…';
+    const [t, s, p] = await Promise.all([
+      sb.from('technician_profiles').select('user_id,specialty,bio,experience_years,profiles(full_name)').eq('approved', false),
+      sb.from('subscriptions').select('id,created_at,profiles(full_name),subscription_plans(title,duration_days)').eq('status', 'pending').order('created_at'),
+      sb.from('profiles').select('id,full_name,role').order('full_name').limit(50)
+    ]);
+    box.textContent = '';
+    const loadErr = t.error || s.error || p.error;
+    if (loadErr) { box.textContent = 'بارگذاری ناموفق بود: ' + loadErr.message; return; }
+    const ROLE = { customer: 'مشتری', technician: 'متخصص', admin: 'مدیر' };
+    const name = x => (x && x.full_name) || 'بدون نام';
+    const sec = (title, n) => { const h = el('h3', '', title + ' (' + n + ')'); h.style.margin = '22px 0 10px'; box.append(h); };
+    const act = (d, label, fn) => {
+      const b = el('button', 'link-btn', label); b.type = 'button';
+      b.onclick = async () => { b.disabled = true; const { error } = await fn(); if (error) alert('انجام نشد: ' + error.message); loadAdmin(); };
+      d.append(b);
+    };
+
+    const techs = t.data || [];
+    sec('متخصصان در انتظار تأیید', techs.length);
+    techs.forEach(x => {
+      const d = el('div', 'item');
+      d.append(el('b', '', name(x.profiles)), el('span', 'badge', x.specialty || ''), el('br'),
+        el('small', '', 'سابقه: ' + x.experience_years + ' سال'), el('p', '', x.bio || ''));
+      act(d, 'تأیید', async () => {
+        const r = await sb.from('technician_profiles').update({ approved: true }).eq('user_id', x.user_id);
+        return r.error ? r : sb.from('profiles').update({ role: 'technician' }).eq('id', x.user_id);
+      });
+      act(d, 'رد', () => sb.from('technician_profiles').delete().eq('user_id', x.user_id));
+      box.append(d);
+    });
+
+    const subs = s.data || [];
+    sec('اشتراک‌های در انتظار', subs.length);
+    subs.forEach(x => {
+      const days = (x.subscription_plans && x.subscription_plans.duration_days) || 30;
+      const d = el('div', 'item');
+      d.append(el('b', '', name(x.profiles)), el('span', 'badge', (x.subscription_plans && x.subscription_plans.title) || ''), el('br'),
+        el('small', '', 'درخواست: ' + date(x.created_at)));
+      act(d, 'فعال‌سازی', () => {
+        const now = new Date();
+        return sb.from('subscriptions').update({ status: 'active', starts_at: now.toISOString(), ends_at: new Date(now.getTime() + days * 864e5).toISOString() }).eq('id', x.id);
+      });
+      act(d, 'رد', () => sb.from('subscriptions').update({ status: 'rejected' }).eq('id', x.id));
+      box.append(d);
+    });
+
+    const users = p.data || [];
+    sec('کاربران', users.length);
+    users.forEach(x => {
+      const d = el('div', 'item');
+      d.append(el('b', '', name(x)), el('span', 'badge', ROLE[x.role] || x.role));
+      box.append(d);
+    });
+  }
+
+  loadRefs();
+})();
+</script>
+</body>
+</html>

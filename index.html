@@ -644,7 +644,7 @@
 
   let otpSent = false, pendingPhone = '';
   function normalizeIranPhone(value) {
-    let p = String(value || '').replace(/[\\s\\-()]/g, '');
+    let p = String(value || '').replace(/[\s\-()]/g, '');
     if (p.startsWith('0098')) p = '+' + p.slice(2);
     if (p.startsWith('98')) p = '+' + p;
     if (p.startsWith('09')) p = '+98' + p.slice(1);
@@ -670,7 +670,7 @@
     const b = $('authBtn'); b.disabled = true;
     if (!otpSent) {
       const phone = normalizeIranPhone($('aPhone').value);
-      if (!/^\\+989\\d{9}$/.test(phone)) {
+      if (!/^\+989\d{9}$/.test(phone)) {
         say('authMsg', 'شماره موبایل معتبر وارد کنید؛ مانند 09123456789.'); b.disabled = false; return;
       }
       pendingPhone = phone;
@@ -688,7 +688,7 @@
       $('aOtp').focus(); return;
     }
     const token = $('aOtp').value.trim();
-    if (!/^\\d{4,8}$/.test(token)) { say('authMsg', 'کد پیامکی را درست وارد کنید.'); b.disabled = false; return; }
+    if (!/^\d{4,8}$/.test(token)) { say('authMsg', 'کد پیامکی را درست وارد کنید.'); b.disabled = false; return; }
     const r = await sb.auth.verifyOtp({ phone: pendingPhone, token, type: 'sms' });
     b.disabled = false;
     if (r.error) { say('authMsg', 'کد تأیید نامعتبر است یا منقضی شده؛ دوباره تلاش کنید. ' + r.error.message); return; }

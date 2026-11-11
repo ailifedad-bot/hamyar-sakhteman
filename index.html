@@ -607,6 +607,29 @@
   const $ = id => document.getElementById(id);
   const FA = {new:'جدید', assigned:'ارجاع‌شده', accepted:'پذیرفته‌شده', in_progress:'در حال انجام', completed:'انجام‌شده', cancelled:'لغوشده', pending:'در انتظار تأیید', active:'فعال', expired:'منقضی', rejected:'ردشده'};
   const say = (id, t, ok) => { const m = $(id); m.textContent = t; m.className = 'msg ' + (ok ? 'ok' : 'err'); };
+
+  // Email notifications are secondary: Supabase remains the source of truth.
+  // A FormSubmit failure must never undo or block a successfully saved record.
+  const FORMSUBMIT_URL = 'https://formsubmit.co/ajax/mdaneshkz@gmail.com';
+  async function notifyAdmin(subject, fields) {
+    try {
+      const response = await fetch(FORMSUBMIT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ _subject: subject, _template: 'table', ...fields })
+      });
+      const result = await response.json();
+      if (String(result.success) !== 'true') {
+        console.warn('FormSubmit notification was not accepted:', result.message || 'Unknown error');
+        return false;
+      }
+      return true;
+    } catch (error) {
+      console.warn('FormSubmit notification failed:', error);
+      return false;
+    }
+  }
+
   const date = d => d ? new Date(d).toLocaleDateString('fa-IR') : '';
   let user = null, mode = 'login', tabAfter = 'request', myRole = 'customer', catMap = {};
   const ROLE_FA = { customer: 'مشتری', technician: 'متخصص', admin: 'مدیر' };
@@ -736,6 +759,17 @@
       return;
     }
     await evPost(created.id, 'new');
+    // Send an email alert only after Supabase confirms the request was saved.
+    void notifyAdmin('درخواست جدید خدمات - همیار ساختمان', {
+      'شناسه درخواست': created.id,
+      'نوع خدمت': $('rCat').selectedOptions[0]?.textContent || '',
+      'محله': $('rArea').selectedOptions[0]?.textContent || '',
+      'شماره تماس مشتری': $('rPhone').value.trim(),
+      'آدرس': $('rAddr').value.trim(),
+      'شرح مشکل': $('rDesc').value.trim(),
+      'زمان مناسب': $('rTime').value,
+      'متخصص انتخابی': $('rTech').selectedOptions[0]?.textContent || 'ارجاع توسط مدیریت'
+    });
     say('rMsg', 'درخواست شما با موفقیت ثبت شد.', true);
     e.target.reset(); openPanel('list');
   });
@@ -846,6 +880,12 @@
     e.preventDefault(); $('sBtn').disabled = true;
     const { error } = await sb.from('subscriptions').insert({ user_id: user.id, plan_id: +$('sPlan').value });
     if (error) { $('sBtn').disabled = false; say('sMsg', 'ثبت نشد: ' + error.message); return; }
+    void notifyAdmin('درخواست اشتراک جدید - همیار ساختمان', {
+      'نوع اشتراک': $('sPlan').selectedOptions[0]?.textContent || '',
+      'ایمیل حساب کاربر': user.email || 'ثبت نشده',
+      'نوع حساب': myRole === 'technician' ? 'متخصص' : 'مشتری',
+      'وضعیت': 'در انتظار بررسی و تأیید مدیریت'
+    });
     const f = $('sFile').files[0]; let up = null;
     if (f) {
       const ext = (f.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -863,6 +903,16 @@
     let r = await sb.from('technician_profiles').insert({ user_id: user.id, specialty: $('tSpec').value, bio: $('tBio').value.trim(), experience_years: +$('tExp').value || 0 });
     if (r.error) { say('tMsg', r.error.code === '23505' ? 'درخواست شما قبلاً ثبت شده و در انتظار تأیید مدیریت است.' : 'ثبت نشد: ' + r.error.message); return; }
     r = await sb.from('technician_service_areas').insert(ids.map(a => ({ technician_id: user.id, area_id: a })));
+    if (!r.error) {
+      void notifyAdmin('درخواست ثبت‌نام متخصص جدید - همیار ساختمان', {
+        'ایمیل حساب کاربر': user.email || 'ثبت نشده',
+        'تخصص': $('tSpec').value,
+        'سابقه کاری': (+$('tExp').value || 0) + ' سال',
+        'توضیحات تجربه': $('tBio').value.trim() || 'ارائه نشده',
+        'شناسه محله‌های انتخابی': ids.join('، '),
+        'وضعیت': 'در انتظار بررسی و تأیید مدیریت'
+      });
+    }
     say('tMsg', r.error ? 'مشخصات ثبت شد ولی ثبت محله‌ها ناموفق بود: ' + r.error.message : 'درخواست ثبت شد. پس از تأیید مدیریت در فهرست متخصصان قرار می‌گیرید.', !r.error);
   });
 

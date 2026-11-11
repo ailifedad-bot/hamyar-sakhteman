@@ -726,15 +726,17 @@
   $('reqForm').addEventListener('submit', async e => {
     e.preventDefault(); $('rBtn').disabled = true;
     await sb.from('profiles').update({ phone: $('rPhone').value.trim() }).eq('id', user.id);
-    const { error } = await sb.from('service_requests').insert({
+    const { data: created, error } = await sb.from('service_requests').insert({
       customer_id: user.id, category_id: +$('rCat').value, area_id: +$('rArea').value,
       technician_id: $('rTech').value || null, address: $('rAddr').value.trim(), description: $('rDesc').value.trim(), preferred_time: $('rTime').value
-    });
+    }).select('id').single();
     $('rBtn').disabled = false;
     if (error) {
-      say('rMsg', error.code === '42501' ? 'برای ثبت درخواست باید اشتراک فعال داشته باشید. از تب «اشتراک» اشتراک بگیرید.' : 'ثبت نشد: ' + error.message);
+      say('rMsg', error.code === '42501' ? 'برای ثبت درخواست باید اشتراک فعال مشتری داشته باشید. از تب «اشتراک» اشتراک بگیرید.' : 'ثبت نشد: ' + error.message);
       return;
     }
+    await evPost(created.id, 'new');
+    say('rMsg', 'درخواست شما با موفقیت ثبت شد.', true);
     e.target.reset(); openPanel('list');
   });
 

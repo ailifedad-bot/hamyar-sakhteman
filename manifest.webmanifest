@@ -1,0 +1,15 @@
+{
+  "name": "همیار ساختمان",
+  "short_name": "همیار ساختمان",
+  "description": "ثبت و پیگیری خدمات فنی و تعمیرات ساختمان در گرگان",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#EEF3F1",
+  "theme_color": "#0F5D4E",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

@@ -909,6 +909,9 @@
   $('rArea').addEventListener('change', loadTechOptions);
 
   async function loadTechStatus() {
+    const { data: profile } = await sb.from('profiles').select('full_name,phone').eq('id', user.id).maybeSingle();
+    if (profile && profile.full_name && !$('tName').value) $('tName').value = profile.full_name;
+    if (profile && profile.phone && !$('tPhone').value) $('tPhone').value = profile.phone;
     const { data } = await sb.from('technician_profiles').select('approved,specialty').eq('user_id', user.id).maybeSingle();
     $('techForm').hidden = !!data;
     $('tStatus').textContent = !data ? '' : data.approved
@@ -992,6 +995,7 @@
     let r = await sb.from('technician_profiles').insert({ user_id: user.id, specialty: $('tSpec').value, bio: $('tBio').value.trim(), experience_years: +$('tExp').value || 0 });
     if (r.error) { say('tMsg', r.error.code === '23505' ? 'درخواست شما قبلاً ثبت شده و در انتظار تأیید مدیریت است.' : 'ثبت نشد: ' + r.error.message); return; }
     r = await sb.from('technician_service_areas').insert(ids.map(a => ({ technician_id: user.id, area_id: a })));
+    let emailed = false;
     if (!r.error) {
       const profileUpdate = await sb.from('profiles').update({
         full_name: $('tName').value.trim(),
@@ -1003,7 +1007,7 @@
         return;
       }
       myName = $('tName').value.trim(); myPhone = phone;
-      const emailed = await notifyAdmin('درخواست ثبت‌نام متخصص جدید - همیار ساختمان', {
+      emailed = await notifyAdmin('درخواست ثبت‌نام متخصص جدید - همیار ساختمان', {
         'نام متخصص': myName,
         'شماره موبایل': myPhone,
         'ایمیل حساب': user.email || 'ثبت نشده',
@@ -1015,7 +1019,12 @@
       });
       if (!emailed) console.warn('Technician registration email could not be sent.');
     }
-    say('tMsg', r.error ? 'مشخصات ثبت شد ولی ثبت محله‌ها ناموفق بود: ' + r.error.message : 'درخواست متخصص ثبت شد. ایمیل برای مدیریت ارسال شد و پس از تأیید در فهرست متخصصان قرار می‌گیرید.', !r.error);
+    say('tMsg', r.error
+      ? 'مشخصات ثبت شد ولی ثبت محله‌ها ناموفق بود: ' + r.error.message
+      : emailed
+        ? 'درخواست متخصص ثبت شد و ایمیل برای مدیریت ارسال شد. پس از تأیید در فهرست متخصصان قرار می‌گیرید.'
+        : 'درخواست متخصص در Supabase ثبت شد، اما ارسال ایمیل FormSubmit ناموفق بود. درخواست در پنل مدیریت قابل بررسی است؛ وضعیت ایمیل را نیز باید بررسی کنیم.',
+      !r.error);
   });
 
   /* ---------- Admin: approvals (visible only to role = admin) ---------- */

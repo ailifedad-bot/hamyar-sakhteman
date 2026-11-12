@@ -1092,7 +1092,11 @@
           role: 'technician', approval_status: 'approved', approved_at: new Date().toISOString()
         }).eq('id', x.user_id).neq('role', 'admin');
       });
-      act(d, 'رد', () => sb.from('technician_profiles').delete().eq('user_id', x.user_id));
+      act(d, 'رد', async () => {
+        const rejected = await sb.from('profiles').update({ approval_status: 'rejected' }).eq('id', x.user_id);
+        if (rejected.error) return rejected;
+        return sb.from('technician_profiles').delete().eq('user_id', x.user_id);
+      });
       box.append(d);
     });
 

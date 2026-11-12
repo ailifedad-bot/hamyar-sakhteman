@@ -804,8 +804,7 @@
       full_name: $('gName').value.trim(),
       phone,
       neighborhood: $('gArea').value,
-      reg_note: $('gNote').value.trim(),
-      reg_submitted_at: new Date().toISOString()
+      reg_note: $('gNote').value.trim()
     };
     const { error } = await sb.from('profiles').update(fields).eq('id', user.id);
     if (error) {
@@ -822,9 +821,15 @@
       'شناسه حساب': user.id,
       'وضعیت': 'در انتظار بررسی و تأیید مدیریت'
     });
-    $('gBtn').disabled = false;
-    if (emailed) say('gMsg', 'فرم ثبت شد و ایمیل اطلاع‌رسانی برای مدیریت ارسال شد. پس از تأیید می‌توانید درخواست خدمت ثبت کنید.', true);
-    else say('gMsg', 'فرم در Supabase ذخیره شد، اما ارسال ایمیل FormSubmit ناموفق بود. لطفاً بعداً دوباره از پشتیبانی پیگیری کنید.');
+    if (emailed) {
+      const stamp = await sb.from('profiles').update({ reg_submitted_at: new Date().toISOString() }).eq('id', user.id);
+      $('gBtn').disabled = false;
+      if (stamp.error) say('gMsg', 'ایمیل ارسال شد، اما زمان ارسال فرم در پایگاه داده ثبت نشد: ' + stamp.error.message);
+      else say('gMsg', 'فرم ثبت شد و ایمیل اطلاع‌رسانی برای مدیریت ارسال شد. پس از تأیید می‌توانید درخواست خدمت ثبت کنید.', true);
+    } else {
+      $('gBtn').disabled = false;
+      say('gMsg', 'اطلاعات ذخیره شد، اما ایمیل FormSubmit ارسال نشد. فرم باز می‌ماند تا پس از بررسی اتصال، دوباره ارسال کنید.');
+    }
     await loadReg();
   });
 

@@ -837,7 +837,7 @@
     }).select('id').single();
     $('rBtn').disabled = false;
     if (error) {
-      say('rMsg', error.code === '42501' ? 'برای ثبت درخواست باید اشتراک فعال مشتری داشته باشید. از تب «اشتراک» اشتراک بگیرید.' : 'ثبت نشد: ' + error.message);
+      say('rMsg', error.code === '42501' ? 'ثبت درخواست پس از تأیید ثبت‌نام توسط مدیریت و فعال بودن اشتراک مشتری امکان‌پذیر است. وضعیت را در تب «تأیید ثبت‌نام» بررسی کنید.' : 'ثبت نشد: ' + error.message);
       return;
     }
     await evPost(created.id, 'new');
@@ -980,17 +980,14 @@
 
   $('techForm').addEventListener('submit', async e => {
     e.preventDefault();
+    const phone = normalizeIranPhone($('tPhone').value);
+    if (!/^\+989\d{9}$/.test(phone)) { say('tMsg', 'شماره موبایل متخصص معتبر نیست؛ مانند 09123456789.'); return; }
     const ids = [...document.querySelectorAll('#tAreas input:checked')].map(i => +i.value);
     if (!ids.length) { say('tMsg', 'حداقل یک محله انتخاب کنید.'); return; }
     let r = await sb.from('technician_profiles').insert({ user_id: user.id, specialty: $('tSpec').value, bio: $('tBio').value.trim(), experience_years: +$('tExp').value || 0 });
     if (r.error) { say('tMsg', r.error.code === '23505' ? 'درخواست شما قبلاً ثبت شده و در انتظار تأیید مدیریت است.' : 'ثبت نشد: ' + r.error.message); return; }
     r = await sb.from('technician_service_areas').insert(ids.map(a => ({ technician_id: user.id, area_id: a })));
     if (!r.error) {
-      const phone = normalizeIranPhone($('tPhone').value);
-      if (!/^\+989\d{9}$/.test(phone)) {
-        say('tMsg', 'شماره موبایل متخصص معتبر نیست؛ مانند 09123456789. مشخصات تخصصی ذخیره شده و باید اصلاح شود.');
-        return;
-      }
       const profileUpdate = await sb.from('profiles').update({
         full_name: $('tName').value.trim(),
         phone,
@@ -1073,7 +1070,7 @@
     techs.forEach(x => {
       const d = el('div', 'item');
       d.append(el('b', '', name(x.profiles)), el('span', 'badge', x.specialty || ''), el('br'),
-        el('small', '', 'سابقه: ' + x.experience_years + ' سال'), el('p', '', x.bio || ''));
+        el('small', '', 'موبایل: ' + (x.profiles?.phone || '—') + ' • سابقه: ' + x.experience_years + ' سال'), el('p', '', x.bio || ''));
       act(d, 'تأیید', async () => {
         const r = await sb.from('technician_profiles').update({ approved: true }).eq('user_id', x.user_id);
         if (r.error) return r;
